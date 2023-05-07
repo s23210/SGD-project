@@ -166,7 +166,10 @@ void GameLoop::Event() {
                     }
                     break;
                     case SDLK_RETURN:
-                        Initialize();
+                        Clear();
+                        break;
+                    case SDLK_ESCAPE:
+                        isRunning = false;
                         break;
                 default:
                     break;
