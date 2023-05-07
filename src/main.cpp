@@ -5,7 +5,7 @@ GameLoop* g = new GameLoop();
 const int TICKS = 10;
 
 int main(int argc, char* argv[]) {
-    g->Initialize();
+    g->CreateWindow();
     auto prev_tick = SDL_GetTicks();
     int frame_dropped = 0;
     while (g->getIsRunning()) {

@@ -24,6 +24,7 @@ private:
     double jumpHeight = -7;
     double jumpTime = 0;
     double lastJump = 0;
+    double rotateAngle = 0.0;
 
     SDL_Window* window;
     SDL_Renderer* renderer;
@@ -48,6 +49,7 @@ private:
 
 public:
     GameLoop();
+    bool isOutOfBounds();
     void Gravity();
     void Jump();
     bool getJumpState();
@@ -55,6 +57,7 @@ public:
     bool getIsRunning();
     void Update();
     void Initialize();
+    void CreateWindow();
     void Event();
     void Render();
     void Clear();

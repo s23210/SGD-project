@@ -12,52 +12,54 @@ bool GameLoop::getIsRunning() {
 }
 
 void GameLoop::Initialize() {
+    cout << "Window and renderer created!" << endl;
+    TTF_Init();
+    isRunning = true;
+    playerTexture = TextureManager::Texture("assets/bird1.png", renderer);
+    backgroundTexture0 = TextureManager::Texture("assets/background1.png", renderer);
+    backgroundTexture1 = TextureManager::Texture("assets/background2.png", renderer);
+    pipeTexture = TextureManager::Texture("assets/pipe-green.png", renderer);
+
+    font = TTF_OpenFont("assets/PressStart2P-Regular.ttf", 24);
+    textSurface = TTF_RenderText_Solid(font, "Score: 0", textColor);
+    textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+
+    for (int i = 0; i < 3; i++) {
+        pipes[i].x = 800 + i * 290;
+    }
+
+    //source dimensions
+    srcPlayer.h = 24;
+    srcPlayer.w = 34;
+    srcPlayer.x = srcPlayer.y = 0;
+    //destination dimensions
+    destPlayer.h = 24;
+    destPlayer.w = 34;
+    destPlayer.x = 10;
+    destPlayer.y = 0;
+
+    srcBackground0.h = srcBackground1.h = 640;
+    srcBackground0.w = srcBackground1.w = 1600;
+    srcBackground0.x = srcBackground0.y = srcBackground1.x = srcBackground1.y = 0;
+    destBackground0.h = destBackground1.h = 640;
+    destBackground0.w = destBackground1.w = 1600;
+    destBackground0.x = destBackground0.y = destBackground1.x = destBackground1.y = 0;
+
+    scoreRect.x = 10;
+    scoreRect.y = 10;
+
+    scoreRect.w = textSurface->w;
+    scoreRect.h = textSurface->h;
+}
+
+void GameLoop::CreateWindow() {
     SDL_Init(SDL_INIT_EVERYTHING);
     window = SDL_CreateWindow("Flappy Bird", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT,
                               SDL_WINDOW_RESIZABLE);
     if (window) {
         renderer = SDL_CreateRenderer(window, -1, 0);
         if (renderer) {
-            cout << "Window and renderer created!" << endl;
-            TTF_Init();
-            isRunning = true;
-            playerTexture = TextureManager::Texture("assets/bird1.png", renderer);
-            backgroundTexture0 = TextureManager::Texture("assets/background1.png", renderer);
-            backgroundTexture1 = TextureManager::Texture("assets/background2.png", renderer);
-            pipeTexture = TextureManager::Texture("assets/pipe-green.png", renderer);
-
-            font = TTF_OpenFont("assets/PressStart2P-Regular.ttf", 24);
-            textSurface = TTF_RenderText_Solid(font, "Score: 0", textColor);
-            textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
-
-            for (int i = 0; i < 3; i++) {
-                pipes[i].x = 800 + i * 290;
-            }
-
-            //source dimensions
-            srcPlayer.h = 24;
-            srcPlayer.w = 34;
-            srcPlayer.x = srcPlayer.y = 0;
-            //destination dimensions
-            destPlayer.h = 24;
-            destPlayer.w = 34;
-            destPlayer.x = 10;
-            destPlayer.y = 0;
-
-            srcBackground0.h = srcBackground1.h = 640;
-            srcBackground0.w = srcBackground1.w = 1600;
-            srcBackground0.x = srcBackground0.y = srcBackground1.x = srcBackground1.y = 0;
-            destBackground0.h = destBackground1.h = 640;
-            destBackground0.w = destBackground1.w = 1600;
-            destBackground0.x = destBackground0.y = destBackground1.x = destBackground1.y = 0;
-
-            scoreRect.x = 0;
-            scoreRect.y = 0;
-            scoreRect.w = 100;
-            scoreRect.h = 100;
-
-            scoreRect.w = textSurface->w;
-            scoreRect.h = textSurface->h;
+            Initialize();
         } else {
             cout << "Error: " << "renderer not created!" << endl;
         }
@@ -80,12 +82,22 @@ void GameLoop::Gravity() {
             isJumping = false;
             jumpHeight = -7;
         }
+        if (rotateAngle >= -30)
+            rotateAngle = rotateAngle - 0.7;
+
     } else {
         accelerator1 = accelerator1 + 0.035;
         accelerator2 = accelerator2 + 0.035;
         yPos = yPos + gravity + accelerator1 + accelerator2;
         destPlayer.y = yPos;
+        if (rotateAngle <= 45)
+            rotateAngle = rotateAngle + 0.5;
     }
+}
+
+bool GameLoop::isOutOfBounds() {
+    return destPlayer.y < 0 || destPlayer.y > HEIGHT - destPlayer.h || destPlayer.x < 0 ||
+           destPlayer.x > WIDTH - destPlayer.w;
 }
 
 bool GameLoop::getJumpState() {
@@ -152,6 +164,10 @@ void GameLoop::Event() {
                     } else {
                         Gravity();
                     }
+                    break;
+                    case SDLK_RETURN:
+                        Initialize();
+                        break;
                 default:
                     break;
             }
@@ -177,7 +193,7 @@ void GameLoop::Update() {
 
     for (auto &pipe: pipes) {
         pipe.Update();
-        if (pipe.HasCollided(destPlayer)) {
+        if (pipe.HasCollided(destPlayer) || isOutOfBounds()) {
             isDead = true;
 //            isRunning = false;
 //            system("Rundll32.exe user32.dll,LockWorkStation"); //funny comment xD
@@ -199,11 +215,11 @@ void GameLoop::Render() {
     SDL_RenderCopy(renderer, backgroundTexture1, &srcBackground1, &destBackground1);
     SDL_RenderCopy(renderer, backgroundTexture0, &srcBackground0, &destBackground0);
 
-    SDL_RenderCopy(renderer, playerTexture, &srcPlayer, &destPlayer);
+    SDL_RenderCopyEx(renderer, playerTexture, &srcPlayer, &destPlayer, rotateAngle, NULL, SDL_FLIP_NONE);
     for (auto &pipe: pipes) {
         pipe.Render(renderer, pipeTexture);
     }
-    
+
     SDL_RenderCopy(renderer, textTexture, NULL, &scoreRect);
     SDL_RenderPresent(renderer);
 }
