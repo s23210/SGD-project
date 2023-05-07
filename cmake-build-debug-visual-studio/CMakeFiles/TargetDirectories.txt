@@ -1,3 +1,0 @@
-C:/Users/User/CLionProjects/SGD-project/cmake-build-debug-visual-studio/CMakeFiles/SGD-project.dir
-C:/Users/User/CLionProjects/SGD-project/cmake-build-debug-visual-studio/CMakeFiles/edit_cache.dir
-C:/Users/User/CLionProjects/SGD-project/cmake-build-debug-visual-studio/CMakeFiles/rebuild_cache.dir
