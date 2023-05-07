@@ -2,7 +2,7 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
-//#include <SDL_ttf.h>
+#include <SDL_ttf.h>
 #include "TextureManager.h"
 #include "Pipe.h"
 #include <iostream>
@@ -29,15 +29,15 @@ private:
     SDL_Renderer* renderer;
     SDL_Event event;
 
-//    TTF_Font* font;
-//    SDL_Color textColor = { 255, 255, 255 };
-//    SDL_Surface* textSurface;
+    TTF_Font* font;
+    SDL_Color textColor = { 255, 255, 255 };
+    SDL_Surface* textSurface;
 
     SDL_Texture* playerTexture;
     SDL_Texture* backgroundTexture0;
     SDL_Texture* backgroundTexture1;
     SDL_Texture* pipeTexture;
-//    SDL_Texture* textTexture;
+    SDL_Texture* textTexture;
 
     SDL_Rect srcPlayer, destPlayer;
     SDL_Rect srcBackground0, destBackground0;

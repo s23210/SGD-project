@@ -19,13 +19,16 @@ void GameLoop::Initialize() {
         renderer = SDL_CreateRenderer(window, -1, 0);
         if (renderer) {
             cout << "Window and renderer created!" << endl;
+            TTF_Init();
             isRunning = true;
             playerTexture = TextureManager::Texture("assets/bird1.png", renderer);
             backgroundTexture0 = TextureManager::Texture("assets/background1.png", renderer);
             backgroundTexture1 = TextureManager::Texture("assets/background2.png", renderer);
             pipeTexture = TextureManager::Texture("assets/pipe-green.png", renderer);
 
-//            font = TTF_OpenFont("assets/`PressStart2P-Regular.ttf", 24);
+            font = TTF_OpenFont("assets/PressStart2P-Regular.ttf", 24);
+            textSurface = TTF_RenderText_Solid(font, "Score: 0", textColor);
+            textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
 
             for (int i = 0; i < 3; i++) {
                 pipes[i].x = 800 + i * 290;
@@ -52,6 +55,9 @@ void GameLoop::Initialize() {
             scoreRect.y = 0;
             scoreRect.w = 100;
             scoreRect.h = 100;
+
+            scoreRect.w = textSurface->w;
+            scoreRect.h = textSurface->h;
         } else {
             cout << "Error: " << "renderer not created!" << endl;
         }
@@ -61,6 +67,9 @@ void GameLoop::Initialize() {
 }
 
 void GameLoop::Gravity() {
+    if (isDead) {
+        return;
+    }
     if (getJumpState()) {
         accelerator1 = accelerator1 + 0.035;
         accelerator2 = accelerator2 + 0.035;
@@ -84,6 +93,9 @@ bool GameLoop::getJumpState() {
 }
 
 void GameLoop::Jump() {
+    if (isDead) {
+        return;
+    }
     if (jumpTime - lastJump > 80) {
         accelerator1 = 0;
         accelerator2 = 0;
@@ -108,7 +120,7 @@ void GameLoop::Event() {
             isRunning = false;
             break;
         case SDL_MOUSEBUTTONDOWN:
-            cout << "Mouse button down!" << endl;
+//            cout << "Mouse button down!" << endl;
             if (!getJumpState()) {
                 Jump();
             } else {
@@ -126,7 +138,7 @@ void GameLoop::Event() {
                     }
                     break;
                 case SDLK_UP:
-                    cout << "Up arrow pressed!" << endl;
+//                    cout << "Up arrow pressed!" << endl;
                     if (!getJumpState()) {
                         Jump();
                     } else {
@@ -134,7 +146,7 @@ void GameLoop::Event() {
                     }
                     break;
                 case SDLK_w:
-                    cout << "W pressed!" << endl;
+//                    cout << "W pressed!" << endl;
                     if (!getJumpState()) {
                         Jump();
                     } else {
@@ -150,6 +162,10 @@ void GameLoop::Event() {
 }
 
 void GameLoop::Update() {
+    if (isDead) {
+        return;
+    }
+
     destBackground1.x -= 2;
     destBackground0.x -= 3;
 
@@ -170,7 +186,10 @@ void GameLoop::Update() {
         if (pipe.HasPassed(destPlayer)) {
             score++;
             // "Score: 0"
-//            textSurface = TTF_RenderText_Solid(font, ("Score: " + to_string(score)).c_str(), textColor);
+            textSurface = TTF_RenderText_Solid(font, ("Score: " + to_string(score)).c_str(), textColor);
+            textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+            scoreRect.w = textSurface->w;
+            scoreRect.h = textSurface->h;
         }
     }
 }
@@ -180,33 +199,25 @@ void GameLoop::Render() {
     SDL_RenderCopy(renderer, backgroundTexture1, &srcBackground1, &destBackground1);
     SDL_RenderCopy(renderer, backgroundTexture0, &srcBackground0, &destBackground0);
 
-    if (isDead) {
-        //add game over screen
-        cout << "Game over!" << endl << "Score: " << score << endl;
-        SDL_RenderCopy(renderer, playerTexture, &srcPlayer, &destPlayer);
-        //frozen screen
-        SDL_RenderPresent(renderer);
-        SDL_Delay(2000);
-        isRunning = false;
-    } else {
-        for (auto &pipe: pipes) {
-            pipe.Render(renderer, pipeTexture);
-        }
-
-        SDL_RenderCopy(renderer, playerTexture, &srcPlayer, &destPlayer);
-//        SDL_RenderCopy(renderer, textTexture, NULL, &scoreRect);
+    SDL_RenderCopy(renderer, playerTexture, &srcPlayer, &destPlayer);
+    for (auto &pipe: pipes) {
+        pipe.Render(renderer, pipeTexture);
     }
+    
+    SDL_RenderCopy(renderer, textTexture, NULL, &scoreRect);
     SDL_RenderPresent(renderer);
 }
 
 void GameLoop::Clear() {
-//    SDL_FreeSurface(textSurface);
+    SDL_FreeSurface(textSurface);
 
-//    SDL_DestroyTexture(textTexture);
+    SDL_DestroyTexture(textTexture);
     SDL_DestroyTexture(playerTexture);
     SDL_DestroyTexture(backgroundTexture0);
     SDL_DestroyTexture(backgroundTexture1);
     SDL_DestroyTexture(pipeTexture);
+
+    TTF_Quit();
 
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
