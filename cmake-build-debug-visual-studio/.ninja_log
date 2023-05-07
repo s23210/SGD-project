@@ -1,0 +1,23 @@
+# ninja log v5
+1	136	7050966826235344	CMakeFiles/SGD-project.dir/main.cpp.obj	9068f72cc9324b23
+1	64	7051599796609563	build.ninja	ed5d976decfc680b
+501	596	7051583059589639	SGD-project.exe	20cf03e065edb6c0
+5	526	7051588790786310	CMakeFiles/SGD-project.dir/src/main.cpp.obj	d89603300b1c86d
+1	526	7051588790796307	CMakeFiles/SGD-project.dir/src/GameLoop.cpp.obj	dc7a2af10073c046
+8	525	7051588790776304	CMakeFiles/SGD-project.dir/src/TextureManager.cpp.obj	55fd6c94b9cbcbb2
+9	404	7051599813699725	CMakeFiles/SGD-project.dir/src/TextureManager.cpp.obj	1bf51a0ec1ed3d2
+5	405	7051599813699725	CMakeFiles/SGD-project.dir/src/main.cpp.obj	f5e3c0ef5c0cbe81
+1	409	7051599813769738	CMakeFiles/SGD-project.dir/src/GameLoop.cpp.obj	32b187a9e5560beb
+409	508	7051599814519612	SGD-project.exe	8605e48a28793f24
+8	529	7051604828870308	CMakeFiles/SGD-project.dir/src/TextureManager.cpp.obj	1bf51a0ec1ed3d2
+1	530	7051604828880310	CMakeFiles/SGD-project.dir/src/main.cpp.obj	f5e3c0ef5c0cbe81
+5	530	7051604828900324	CMakeFiles/SGD-project.dir/src/GameLoop.cpp.obj	32b187a9e5560beb
+531	632	7051604829641966	SGD-project.exe	8605e48a28793f24
+0	501	7051607130559714	CMakeFiles/SGD-project.dir/src/GameLoop.cpp.obj	32b187a9e5560beb
+501	597	7051607131309902	SGD-project.exe	8605e48a28793f24
+0	516	7051609242567533	CMakeFiles/SGD-project.dir/src/GameLoop.cpp.obj	32b187a9e5560beb
+516	609	7051609243297671	SGD-project.exe	8605e48a28793f24
+1	513	7051617761421870	CMakeFiles/SGD-project.dir/src/TextureManager.cpp.obj	1bf51a0ec1ed3d2
+513	607	7051617762142052	SGD-project.exe	8605e48a28793f24
+0	506	7051622750657496	CMakeFiles/SGD-project.dir/src/GameLoop.cpp.obj	32b187a9e5560beb
+507	602	7051622751407648	SGD-project.exe	8605e48a28793f24
