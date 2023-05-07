@@ -1,7 +1,7 @@
-#ifndef SGD_PROJECT_TEXTUREMANAGER_H
-#define SGD_PROJECT_TEXTUREMANAGER_H
+#pragma once
 
-#include "GameLoop.h"
+#include <SDL.h>
+#include <SDL_image.h>
 
 class TextureManager {
 public:
@@ -9,4 +9,3 @@ public:
 //    static void Draw(SDL_Renderer* renderer, SDL_Texture* texture, SDL_Rect sourceRectangle, SDL_Rect destinationRectangle);
 };
 
-#endif //SGD_PROJECT_TEXTUREMANAGER_H

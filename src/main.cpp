@@ -9,9 +9,9 @@ int main(int argc, char* argv[]) {
     auto prev_tick = SDL_GetTicks();
     int frame_dropped = 0;
     while (g->getIsRunning()) {
-//        Uint64 start = SDL_GetPerformanceCounter();
         if (!frame_dropped) {
             g->Render();
+            g->Gravity();
             g->Event();
             g->Update();
         }
@@ -26,10 +26,6 @@ int main(int argc, char* argv[]) {
         }
 
         prev_tick += TICKS;
-
-//        Uint64 end = SDL_GetPerformanceCounter();
-//        float elapsedMS = (end - start) / (float)SDL_GetPerformanceFrequency() * 1000.0f;
-//        SDL_Delay(floor(16.666f - elapsedMS));
     }
     g->Clear();
     return 0;
