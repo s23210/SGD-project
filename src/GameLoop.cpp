@@ -19,6 +19,25 @@ void GameLoop::Initialize() {
             cout << "Window and renderer created!" << endl;
             isRunning = true;
             playerTexture = TextureManager::Texture("assets/bird1.png", renderer);
+            backgroundTexture0 = TextureManager::Texture("assets/background1.png", renderer);
+            backgroundTexture1 = TextureManager::Texture("assets/background2.png", renderer);
+
+            //source dimensions
+            srcPlayer.h = 24;
+            srcPlayer.w = 34;
+            srcPlayer.x = srcPlayer.y = 0;
+            //destination dimensions
+            destPlayer.h = 24;
+            destPlayer.w = 34;
+            destPlayer.x = 10;
+            destPlayer.y = 0;
+
+            srcBackground0.h = srcBackground1.h = 640;
+            srcBackground0.w = srcBackground1.w = 1600;
+            srcBackground0.x = srcBackground0.y = srcBackground1.x = srcBackground1.y = 0;
+            destBackground0.h = destBackground1.h = 640;
+            destBackground0.w = destBackground1.w = 1600;
+            destBackground0.x = destBackground0.y = destBackground1.x = destBackground1.y = 0;
         } else {
             cout << "Error: " << "renderer not created!" << endl;
         }
@@ -40,6 +59,7 @@ void GameLoop::Event() {
             switch (event.key.keysym.sym) {
                 case SDLK_SPACE:
                     cout << "Spacebar pressed!" << endl;
+                    destPlayer.y -= 50;
                     break;
                 default:
                     break;
@@ -48,12 +68,30 @@ void GameLoop::Event() {
         default:
             break;
     }
-    
+}
+
+void GameLoop::Update() {
+
+    destPlayer.y += 2;
+
+    destBackground1.x -= 2;
+    destBackground0.x -= 3;
+
+    if(destBackground0.x <= -800)
+        destBackground0.x = 0;
+
+    if(destBackground1.x <= -800)
+        destBackground1.x = 0;
+
+    timer++;
 }
 
 void GameLoop::Render() {
     SDL_RenderClear(renderer);
-    SDL_RenderCopy(renderer, playerTexture, NULL, NULL);
+    SDL_RenderCopy(renderer, backgroundTexture1, &srcBackground1, &destBackground1);
+    SDL_RenderCopy(renderer, backgroundTexture0, &srcBackground0, &destBackground0);
+
+    SDL_RenderCopy(renderer, playerTexture, &srcPlayer, &destPlayer);
     SDL_RenderPresent(renderer);
 }
 
