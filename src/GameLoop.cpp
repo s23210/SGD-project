@@ -55,7 +55,7 @@ void GameLoop::Initialize() {
 void GameLoop::CreateWindow() {
     SDL_Init(SDL_INIT_EVERYTHING);
     window = SDL_CreateWindow("Flappy Bird", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, WIDTH, HEIGHT,
-                              SDL_WINDOW_RESIZABLE);
+                              SDL_WINDOW_SHOWN);
     if (window) {
         renderer = SDL_CreateRenderer(window, -1, 0);
         if (renderer) {
