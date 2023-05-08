@@ -83,7 +83,7 @@ void GameLoop::Gravity() {
             jumpHeight = -7;
         }
         if (rotateAngle >= -30)
-            rotateAngle = rotateAngle - 0.7;
+            rotateAngle = rotateAngle - 0.6;
 
     } else {
         accelerator1 = accelerator1 + 0.035;
@@ -91,7 +91,7 @@ void GameLoop::Gravity() {
         yPos = yPos + gravity + accelerator1 + accelerator2;
         destPlayer.y = yPos;
         if (rotateAngle <= 45)
-            rotateAngle = rotateAngle + 0.5;
+            rotateAngle = rotateAngle + 0.4;
     }
 }
 
