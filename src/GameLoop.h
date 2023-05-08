@@ -61,5 +61,6 @@ public:
     void Event();
     void Render();
     void Clear();
+    void resetGame();
 };
 

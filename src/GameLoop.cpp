@@ -124,6 +124,30 @@ void GameLoop::getJumpTime() {
     jumpTime = SDL_GetTicks();
 }
 
+void GameLoop::resetGame() {
+    yPos = 256;
+    destPlayer.y = yPos;
+    accelerator1 = 0;
+    accelerator2 = 0;
+    rotateAngle = 0;
+    score = 0;
+    isDead = false;
+    lastJump = 0;
+    isJumping = false;
+    jumpTime = 0;
+    jumpHeight = -7;
+    gravity = 0.5;
+
+    for (int i = 0; i < 3; i++) {
+        pipes[i].x = 800 + i * 290;
+    }
+
+    SDL_DestroyTexture(textTexture);
+    SDL_FreeSurface(textSurface);
+    textSurface = TTF_RenderText_Solid(font, "Score: 0", textColor);
+    textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
+}
+
 void GameLoop::Event() {
     getJumpTime();
     SDL_PollEvent(&event);
@@ -166,7 +190,7 @@ void GameLoop::Event() {
                     }
                     break;
                     case SDLK_RETURN:
-                        Clear();
+                        resetGame();
                         break;
                     case SDLK_ESCAPE:
                         isRunning = false;
@@ -204,7 +228,6 @@ void GameLoop::Update() {
         }
         if (pipe.HasPassed(destPlayer)) {
             score++;
-            // "Score: 0"
             textSurface = TTF_RenderText_Solid(font, ("Score: " + to_string(score)).c_str(), textColor);
             textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
             scoreRect.w = textSurface->w;
