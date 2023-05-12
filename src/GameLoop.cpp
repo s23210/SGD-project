@@ -1,4 +1,3 @@
-#include <string>
 #include "GameLoop.h"
 
 GameLoop::GameLoop() {
@@ -14,8 +13,10 @@ bool GameLoop::getIsRunning() {
 void GameLoop::Initialize() {
     cout << "Window and renderer created!" << endl;
     TTF_Init();
+    cout << "TTF initialized!" << endl;
     isRunning = true;
-    playerTexture = TextureManager::Texture("assets/bird1.png", renderer);
+    playerTexture = TextureManager::Texture("assets/spritesheet.png", renderer);
+
     backgroundTexture0 = TextureManager::Texture("assets/background1.png", renderer);
     backgroundTexture1 = TextureManager::Texture("assets/background2.png", renderer);
     pipeTexture = TextureManager::Texture("assets/pipe-green.png", renderer);
@@ -204,10 +205,19 @@ void GameLoop::Event() {
     }
 }
 
+void GameLoop::AnimateBird() {
+    Uint32 ticks = SDL_GetTicks();
+    Uint32 sprite = (ticks / 100) % 4;
+    srcPlayer.x = sprite * 34;
+
+}
+
 void GameLoop::Update() {
     if (isDead) {
         return;
     }
+
+    AnimateBird();
 
     destBackground1.x -= 2;
     destBackground0.x -= 3;

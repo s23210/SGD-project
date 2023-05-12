@@ -6,6 +6,7 @@
 #include "TextureManager.h"
 #include "Pipe.h"
 #include <iostream>
+#include <string>
 using namespace std;
 
 class GameLoop {
@@ -56,6 +57,7 @@ public:
     void getJumpTime();
     bool getIsRunning();
     void Update();
+    void AnimateBird();
     void Initialize();
     void CreateWindow();
     void Event();
