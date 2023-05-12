@@ -4,7 +4,7 @@ const int GAP = 150;
 
 Pipe::Pipe() {
     pipeWidth = 80;
-    pipeHeight = 360;
+    pipeHeight = 440;
     isPassed = false;
      y = (rand() % 12) * 20 + 200;
 
