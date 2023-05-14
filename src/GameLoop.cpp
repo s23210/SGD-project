@@ -14,6 +14,24 @@ void GameLoop::Initialize() {
     cout << "Window and renderer created!" << endl;
     TTF_Init();
     cout << "TTF initialized!" << endl;
+
+    if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0) {
+        cout << "Error: " << Mix_GetError() << endl;
+    } else {
+        cout << "Audio initialized!" << endl;
+        jumpSound = Mix_LoadWAV("assets/jump.wav");
+        hitSound = Mix_LoadWAV("assets/hit.wav");
+        pointSound = Mix_LoadWAV("assets/point.wav");
+        music = Mix_LoadMUS("assets/music.mp3");
+        Mix_VolumeMusic((MIX_MAX_VOLUME * 60) / 100);
+        Mix_PlayMusic(music, -1);
+        Mix_Volume(-1, (SDL_MIX_MAXVOLUME * 50 ) / 100);
+
+        if (jumpSound == NULL || hitSound == NULL || pointSound == NULL || music == NULL) {
+            cout << "Error: " << Mix_GetError() << endl;
+        }
+    }
+
     isRunning = true;
     playerTexture = TextureManager::Texture("assets/spritesheet.png", renderer);
 
@@ -109,6 +127,9 @@ void GameLoop::Jump() {
     if (isDead) {
         return;
     }
+
+    Mix_PlayChannel(-1, jumpSound, 0);
+
     if (jumpTime - lastJump > 80) {
         accelerator1 = 0;
         accelerator2 = 0;
@@ -231,12 +252,14 @@ void GameLoop::Update() {
     for (auto &pipe: pipes) {
         pipe.Update();
         if (pipe.HasCollided(destPlayer) || isOutOfBounds()) {
+            Mix_PlayChannel(-1, hitSound, 0);
             isDead = true;
 //            isRunning = false;
 //            system("Rundll32.exe user32.dll,LockWorkStation"); //funny comment xD
             return;
         }
         if (pipe.HasPassed(destPlayer)) {
+            Mix_PlayChannel(-1, pointSound, 0);
             score++;
             textSurface = TTF_RenderText_Solid(font, ("Score: " + to_string(score)).c_str(), textColor);
             textTexture = SDL_CreateTextureFromSurface(renderer, textSurface);
@@ -268,6 +291,11 @@ void GameLoop::Clear() {
     SDL_DestroyTexture(backgroundTexture0);
     SDL_DestroyTexture(backgroundTexture1);
     SDL_DestroyTexture(pipeTexture);
+
+    Mix_FreeChunk(hitSound);
+    Mix_FreeChunk(jumpSound);
+    Mix_FreeChunk(pointSound);
+    Mix_FreeMusic(music);
 
     TTF_Quit();
 

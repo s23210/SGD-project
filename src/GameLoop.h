@@ -2,6 +2,7 @@
 
 #include <SDL.h>
 #include <SDL_image.h>
+#include <SDL_mixer.h>
 #include <SDL_ttf.h>
 #include "TextureManager.h"
 #include "Pipe.h"
@@ -30,6 +31,12 @@ private:
     SDL_Window* window;
     SDL_Renderer* renderer;
     SDL_Event event;
+
+    Mix_Chunk* jumpSound;
+    Mix_Chunk* hitSound;
+    Mix_Chunk* pointSound;
+
+    Mix_Music* music;
 
     TTF_Font* font;
     SDL_Color textColor = { 255, 255, 255 };
