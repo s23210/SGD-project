@@ -32,20 +32,20 @@ private:
     SDL_Renderer* renderer;
     SDL_Event event;
 
-    Mix_Chunk* jumpSound;
-    Mix_Chunk* hitSound;
-    Mix_Chunk* pointSound;
+    Mix_Chunk* jumpSound; //copyright by original flappy bird
+    Mix_Chunk* hitSound; //copyright by original flappy bird
+    Mix_Chunk* pointSound; //copyright by original flappy bird
 
-    Mix_Music* music;
+    Mix_Music* music; //music from yt: (https://www.youtube.com/watch?v=8YHZOIna15Y)
 
-    TTF_Font* font;
+    TTF_Font* font; // font from fonts.google: https://fonts.google.com/specimen/Press+Start+2P
     SDL_Color textColor = { 255, 255, 255 };
     SDL_Surface* textSurface;
 
-    SDL_Texture* playerTexture;
-    SDL_Texture* backgroundTexture0;
-    SDL_Texture* backgroundTexture1;
-    SDL_Texture* pipeTexture;
+    SDL_Texture* playerTexture; //copyright by original flappy bird
+    SDL_Texture* backgroundTexture0; //original texture by flappy bird remade for parallax
+    SDL_Texture* backgroundTexture1; //original texture by flappy bird remade for parallax
+    SDL_Texture* pipeTexture; //copyright by original flappy bird
     SDL_Texture* textTexture;
 
     SDL_Rect srcPlayer, destPlayer;
